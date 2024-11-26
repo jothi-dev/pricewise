@@ -8,17 +8,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-type Props = {
+type ProductDetailsProps = {
   params: {
     id: string;
   };
 };
 
-const ProductDetails = async ({ params: { id } }: Props) => {
-  const product: Product | null = await getProductById(id);
+const ProductDetails = async ({ params }: ProductDetailsProps) => {
+  const { id } = params;
 
+  const product: Product | null = await getProductById(id);
   if (!product) {
     redirect("/");
+    return null; // Ensure no further rendering occurs
   }
 
   const similarProducts: Product[] = await getSimilarProducts(id);
